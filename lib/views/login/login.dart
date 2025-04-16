@@ -16,8 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  _onLoginPressed(BuildContext context) {
+  _navigateToDashboard(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.dashboard);
+  }
+
+  _navigateToSignUp(BuildContext context) {
+    Navigator.pushNamed(context, Routes.signup);
   }
 
   @override
@@ -32,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
@@ -46,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                       textColor: Theme.of(context).colorScheme.primary,
                     ),
                     SizedBox(
-                      height: 4.0,
+                      height: 8.0,
                     ),
                     BodyMediumText(
                       'Enter your credentials to continue',
@@ -58,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       labelText: 'Email',
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 24.0),
                     InputFieldWidget(
                       controller: _passwordController,
                       obscureText: true,
@@ -69,22 +73,24 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                PrimaryButton(
-                  text: 'Login',
-                  onPressed: () => _onLoginPressed(context),
+                Column(
+                  children: [
+                    PrimaryButton(
+                      text: 'Login',
+                      onPressed: () => _navigateToDashboard(context),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                      onTap: () => _navigateToSignUp(context),
+                      child: BodySmallText(
+                        'Don\'t have an account? Sign up',
+                        textColor: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ],
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.signup);
-                  },
-                  child: BodySmallText(
-                    'Don\'t have an account? Sign up',
-                    textColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                )
               ],
             ),
           ),
