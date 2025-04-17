@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/views/dashboard/widgets/add_task.dart';
+import 'package:flutter_application_1/widgets/show_dialog.dart';
 
+import '../../config/routes.dart';
 import '../../models/task_model.dart';
+import '../../widgets/text_widgets.dart';
+import 'widgets/dashboard_menu.dart';
 import 'widgets/task_card.dart';
-
-//On edit show dialog with edit input
-//on create show dialog with input field
-//on delete ask for confirmation using dialog
+import 'widgets/task_list.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -22,29 +24,37 @@ class _DashboardPageState extends State<DashboardPage> {
     Task(title: 'Task 4', description: 'Description for Task 4'),
     Task(title: 'Task 5', description: 'Description for Task 5'),
   ];
+
+  _onAddTask(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AddTaskDialog();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const DisplayLargeText('Dashboard'),
+        actions: [const DashboardMenu()],
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
           child: SizedBox(
-              width: double.infinity,
-              child: SizedBox(
-                child: ListView.builder(
-                    itemCount: tasks.length,
-                    itemBuilder: (context, index) {
-                      return TaskCard(
-                        title: tasks[index].title,
-                        description: tasks[index].description,
-                      );
-                    }),
-              )),
+            width: double.infinity,
+            child: TaskList(
+              tasks: tasks,
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {},
+        tooltip: 'Add Task',
+        child: const Icon(Icons.add),
+        onPressed: () => _onAddTask(context),
       ),
     );
   }

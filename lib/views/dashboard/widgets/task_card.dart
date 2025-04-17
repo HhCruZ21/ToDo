@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../widgets/input_field.dart';
+import '../../../widgets/show_dialog.dart';
+import '../../../widgets/text_widgets.dart';
+
 class TaskCard extends StatefulWidget {
   const TaskCard({required this.title, required this.description, super.key});
 
@@ -11,9 +15,63 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
-  _onEdit(BuildContext context) {}
+  _onEdit(BuildContext context) {
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController descriptionController = TextEditingController();
+    showCustomDialog(
+        context: context,
+        title: const DisplayLargeText('Edit Task'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            InputFieldWidget(
+              controller: titleController,
+              labelText: 'Title',
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            InputFieldWidget(
+                controller: descriptionController, labelText: 'Description'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const BodyMediumText('Cancel'),
+          ),
+          const SizedBox(width: 4),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const BodyMediumText('Save'),
+          ),
+        ]);
+  }
 
-  _onDelete(BuildContext context) {}
+  _onDelete(BuildContext context) {
+    showCustomDialog(
+      context: context,
+      title: const DisplayLargeText('Delete Task'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BodyMediumText('Are you sure you want to delete this task?'),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const BodyMediumText('Cancel'),
+        ),
+        const SizedBox(width: 4),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const BodyMediumText('Save'),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +82,8 @@ class _TaskCardState extends State<TaskCard> {
       child: ListTile(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        title: Text(
-          widget.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        subtitle: Text(
-          widget.description,
-          style: const TextStyle(fontSize: 15, color: Colors.black54),
-        ),
+        title: BodyMediumText(widget.title),
+        subtitle: BodySmallText(widget.description),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
